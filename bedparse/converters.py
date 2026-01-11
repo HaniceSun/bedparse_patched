@@ -21,9 +21,21 @@ def gtf2bed(gtf, extra=[''], filterKey="transcript_biotype", filterType=[''], tr
             # Parse the extra fields
             if(extra!=['']):
                 for field in extra:
-                    extrainfo.setdefault(txName, dict())[field]=re.sub('.*'+field+' "?([^"]+)"?;.*', "\\1", line[8])
-                    # If no substitution occured, set the extra field to '.'
-                    if(extrainfo[txName][field] == line[8]): extrainfo[txName][field] = "."
+                    #extrainfo.setdefault(txName, dict())[field]=re.sub('.*'+field+' "?([^"]+)"?;.*', "\\1", line[8])
+                    ## If no substitution occured, set the extra field to '.'
+                    #if(extrainfo[txName][field] == line[8]): extrainfo[txName][field] = "."
+
+                    # patched by hanice sun to handle multiple tags
+                    if field == 'tag':
+                        s = re.findall('tag "(.*?)";', line[8])
+                        if s:
+                            extrainfo.setdefault(txName, dict())[field] = ','.join(sorted(set(s)))
+                        else:
+                            extrainfo.setdefault(txName, dict())[field] = "."
+                    else:
+                        extrainfo.setdefault(txName, dict())[field]=re.sub('.*'+field+' "?([^"]+)"?;.*', "\\1", line[8])
+                        if(extrainfo[txName][field] == line[8]): extrainfo[txName][field] = "."
+
             if filterType!=[''] and filterKey not in extra:
                 extrainfo.setdefault(txName, dict())[filterKey]=re.sub('.*'+filterKey+' "?([^"]+)"?;.*', "\\1", line[8])
                 # If no substitution occured, set the extra field to '.'
