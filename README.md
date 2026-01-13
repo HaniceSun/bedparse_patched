@@ -50,6 +50,7 @@ If you use bedparse please cite the following [paper](https://joss.theoj.org/pap
 
 _Leonardi, (2019). Bedparse: feature extraction from BED files. Journal of Open Source Software, 4(34), 1228, https://doi.org/10.21105/joss.01228_
 
+----------
 
 ## Patches by Hanice Sun
 
